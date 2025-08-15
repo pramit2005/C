@@ -1,6 +1,8 @@
-CMakeLists.txt
+
 structure.exe
 sort.exe
 merge_sort.exe
-a.exe
+insertion_sort.exe
 .idea
+linkedlist.exe
+linkedlist_insertion.exe

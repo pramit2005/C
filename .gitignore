@@ -7,3 +7,5 @@ insertion_sort.exe
 linkedlist.exe
 linkedlist_insertion.exe
 stack_linkedlist.exe
+queue.exe
+queue_circular_array.exe

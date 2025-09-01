@@ -52,7 +52,7 @@ void insert_end(int n){
     temp=temp->next;
     temp->next=newnode;
 }
-void insert_middle(int x,int n){
+void insert_position(int x,int n){
     struct node*temp=head;
     struct node*newnode=(struct node*)malloc(sizeof(struct node));
     newnode->data=n;
@@ -68,6 +68,60 @@ void insert_middle(int x,int n){
         temp->next=newnode;
     }
     }
+void delete_begining(){
+    struct node*temp=head;
+    if(head==NULL)
+        printf("\n Nothing to delete");
+    else {
+        head=head->next;
+        free(temp);
+    }
+}
+void delete_end(){
+    struct node*temp=head;
+    if(head==NULL)
+        printf("\n Nothing to delete");
+    else if(head->next==NULL){
+        head=NULL;
+        free(temp);
+    }
+    else{
+        while(temp->next->next)
+        temp=temp->next;
+        free(temp->next);
+        temp->next=NULL;
+    }
+}
+void delete_position(){
+    struct node*temp=head;
+    int x;
+     if(head==NULL)
+        printf("\n Nothing to delete");
+    else if(head->next==NULL){
+        head=NULL;
+        free(temp);
+    }
+    else{
+        printf("\n Enter the data of the node you want to delete: ");
+        scanf("%d",&x);
+        while(temp->next->data!=x)
+        temp=temp->next;
+        struct node*temp2=temp->next;
+        temp->next=temp->next->next;
+        free(temp2);
+    }
+}
+void reverse(struct node* curr) {
+    if (curr == NULL)
+        return;
+    if (curr->next == NULL) {
+        head = curr;   
+        return;
+    }
+    reverse(curr->next);
+    curr->next->next = curr;
+    curr->next = NULL; 
+}
 
 int main(){
     int m,x,a,y;
@@ -80,7 +134,7 @@ int main(){
     }
     while(1){
         int k=0;
-    printf("\n 1.Insert at the begining\n 2.Insert at the middle\n 3.Insert at the end\n 4.Print the Linked List\n 5.Exit");
+    printf("\n 1.Insert at the begining\n 2.Insert at the middle\n 3.Insert at the end\n 4.Print the Linked List\n 5.Delete at the begining\n 6.Delete at the middle\n 7.Delete at the end\n 8.Reverse\n 9.Exit");
     printf("\n Enter a option:  ");
     scanf("%d",&a);
     switch(a){
@@ -94,7 +148,7 @@ int main(){
         scanf("%d",&y);
         printf("\n Enter the data of the node: ");
         scanf("%d",&k);
-        insert_middle(y,k);
+        insert_position(y,k);
         break;
         case 3:
          printf("\n Enter the data of the node: ");
@@ -104,7 +158,19 @@ int main(){
         case 4:
         printLL();
         break;
-        case 5:
+         case 5:
+        delete_begining();
+        break;
+        case 6:
+        delete_position();
+        break;
+        case 7:
+        delete_end();
+        break;
+        case 8:
+        reverse(head);
+        break;
+        case 9:
         exit(0);
         default:
         printf("Invalid input");

@@ -134,7 +134,7 @@ int main(){
     }
     while(1){
         int k=0;
-    printf("\n 1.Insert at the begining\n 2.Insert at the middle\n 3.Insert at the end\n 4.Print the Linked List\n 5.Delete at the begining\n 6.Delete at the middle\n 7.Delete at the end\n 8.Reverse\n 9.Exit");
+    printf("\n 1.Insert at the begining\n 2.Insert at the position\n 3.Insert at the end\n 4.Print the Linked List\n 5.Delete at the begining\n 6.Delete at the position\n 7.Delete at the end\n 8.Reverse\n 9.Exit");
     printf("\n Enter a option:  ");
     scanf("%d",&a);
     switch(a){

@@ -132,9 +132,9 @@ void max(){
 }
 void min(){
     if(head==NULL)
-    printf("\nNo maximum");
+    printf("\nNo minimum");
     else if(head->next==NULL)
-    printf("\nThe maximum is:%d",head->data);
+    printf("\nThe minimum is:%d",head->data);
     else{
         int min=head->data;
         struct node *temp=head->next;

@@ -13,12 +13,10 @@ void createnode(int n){
 
     if(head==NULL){
         head=newnode;
-        tail=newnode;
         newnode->prev=NULL;
     } else {
          newnode->prev=tail;
          tail->next=newnode;
-         tail=newnode;
     }
     tail=newnode;
 }

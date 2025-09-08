@@ -10,20 +10,16 @@ void createnode(int n){
     struct node* newnode=(struct node*)malloc(sizeof(struct node));
     newnode->data=n;
     newnode->next=NULL;
-    tail=newnode;
     if(head==NULL){
-    head=newnode;
-    newnode->prev=NULL;
+        head=newnode;
+        newnode->prev=NULL;
+    } else {
+        tail->next=newnode;
+        newnode->prev=tail;
     }
-    else
-    {
-    struct node* temp=head;
-    while(temp->next)
-    temp=temp->next;
-    newnode->prev=temp;
-    temp->next=newnode;
-    }
+    tail=newnode;
 }
+
 void printLL(){
     struct node* temp=head;
     struct node *temp2=tail;

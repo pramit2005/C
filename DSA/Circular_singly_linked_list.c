@@ -116,13 +116,13 @@ void delete_position(){
         temp=temp->next;
         struct node*temp2=temp->next;
         if(temp2 == tail) {  
-        temp->next = tail->next;  // link prev to head
-        tail = temp;              // update tail
+        temp->next = tail->next; 
+        tail = temp;            
         } 
         else {
-        temp->next = temp2->next; // bypass node
+        temp->next = temp2->next;
         }
-    temp2->next = NULL;  // safety (not necessary in C)
+    temp2->next = NULL;
     free(temp2);
     }
     }
@@ -137,7 +137,34 @@ void reverse(struct node* curr) {
     curr->next->next = curr;
     curr->next = NULL; 
 }
+void insertionSort() {
+    if (tail == NULL || tail->next == tail) return;
 
+    struct node* sorted = NULL;
+    struct node* current = tail->next;
+    struct node* next;
+    tail->next = NULL;
+    while (current != NULL) {
+        next = current->next;
+        if (sorted == NULL || current->data < sorted->data) {
+            current->next = sorted;
+            sorted = current;
+        } else {
+            struct node* temp = sorted;
+            while (temp->next != NULL && temp->next->data < current->data) {
+                temp = temp->next;
+            }
+            current->next = temp->next;
+            temp->next = current;
+        }
+        current = next;
+    }
+    tail = sorted;
+    while (tail->next != NULL) {
+        tail = tail->next;
+    }
+    tail->next = sorted;
+}
 int main(){
     int m,x,a,y;
     printf("\n Enter the number of nodes of the linked list: ");
@@ -149,7 +176,8 @@ int main(){
     }
     while(1){
         int k=0;
-    printf("\n 1.Insert at the begining\n 2.Insert at the position\n 3.Insert at the end\n 4.Print the Linked List\n 5.Delete at the begining\n 6.Delete at the position\n 7.Delete at the end\n 8.Reverse\n 9.Exit");
+    printf("\n 1.Insert at the begining\n 2.Insert at the position\n 3.Insert at the end\n 4.Print the Linked List\n 5.Delete at the begining\n 6.Delete at the position\n 7.Delete at the end\n 8.Reverse");
+    printf("\n 9.Sort\n 10.Exit");
     printf("\n Enter a option:  ");
     scanf("%d",&a);
     switch(a){
@@ -186,6 +214,9 @@ int main(){
         reverse(tail);
         break;
         case 9:
+        insertionSort();
+        break;
+        case 10:
         exit(0);
         default:
         printf("Invalid input");

@@ -14,8 +14,8 @@ void createnode(int n){
         head=newnode;
         newnode->prev=NULL;
     } else {
-        tail->next=newnode;
-        newnode->prev=tail;
+           newnode->prev=tail;
+           tail->next=newnode;
     }
     tail=newnode;
 }

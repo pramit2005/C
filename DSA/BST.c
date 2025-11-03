@@ -73,6 +73,7 @@ struct node* Delete(struct node *root,int n){
     }
     return root;
 }
+
 int main(){
     struct node *root=NULL;
     int n,m;

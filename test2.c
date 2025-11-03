@@ -6,7 +6,7 @@ int main()
     int b;
     printf("enter a num:");
     scanf("%d\n",&b);
-    for(a=2;a<(b-1)/2;a++)
+    for(a=2;a<b;a++)
     {
         if(b%a==0)
         {
@@ -15,11 +15,11 @@ int main()
     }
         if(flag==0)
         {
-            printf("The num is not prime num:%d\n",a);
+            printf("The num is not prime num:%d\n",b);
         }
         else if(flag==1)
         {
-            printf("The num is prime num:%d\n",a);
+            printf("The num is prime num:%d\n",b);
         }
         return 0;
 }

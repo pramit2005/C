@@ -22,3 +22,5 @@ test.exe
 test2.exe
 DSA/string_reverse_stack.exe
 DSA/stack.exe
+DSA/Tree.exe
+DSA/queue_linkedlist.exe

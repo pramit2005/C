@@ -133,7 +133,7 @@ int main(){
         }
         else{
             if(ch=='^'){
-                while(!isEmpty() && precedence(peek())>precedence(ch) && peek()=='(')
+                while(!isEmpty() && precedence(peek())>precedence(ch) && peek()!='(')
                 output[ind++]=pop();
             }
            else {

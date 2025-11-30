@@ -123,24 +123,22 @@ void display(Tree *root){ //level order traversal
     }
     Delete_Queue(&q);
 }
-int height(Tree *root){
-    int left_height,right_height;
-    if(root==NULL)
-        return 0;
-    else{
-        left_height=height(root->left);
-        right_height=height(root->right);
-        if(left_height>right_height)
-            return (left_height+1);
-        else
-            return (right_height+1);
+void Mirror_tree(Tree **root){
+    Tree *temp;
+    if(*root){
+        Mirror_tree(&((*root)->left));
+        Mirror_tree(&((*root)->right));
+        temp=(*root)->left;
+        (*root)->left=(*root)->right;
+        (*root)->right=temp;
     }
+    return;
 }
 Tree *root=NULL;
 int main(){
     int a,b;
     while(1){
-        printf("\n 1.Insert\n 2.Display(Level order)\n 3.Find Height\n 5.Exit");
+        printf("\n 1.Insert\n 2.Display(Level order)\n 3.Mirror the tree\n 5.Exit");
         printf("\n Enter a option: ");
         scanf("%d",&a);
         switch(a){
@@ -153,7 +151,7 @@ int main(){
                 display(root);
                 break;
             case 3:
-                printf("\n The height is : %d",height(root));
+                Mirror_tree(&root);
                 break;
             case 5:
                 exit(0);

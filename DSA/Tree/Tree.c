@@ -137,11 +137,19 @@ void Preorder(Tree *root){
         Preorder(root->right);
     }
 }
+int Sum_all_elements(Tree *root){
+    int left,right;
+    if(root==NULL)
+        return 0;
+    left=Sum_all_elements(root->left);
+    right=Sum_all_elements(root->right);
+    return (left+right+root->data);
+}
 Tree *root=NULL;
 int main(){
     int a,b;
     while(1){
-        printf("\n 1.Insert\n 2.Display(Level order)\n 3.Preorder\n 4.Inorder\n 5.Exit");
+        printf("\n 1.Insert\n 2.Display(Level order)\n 3.Preorder\n 4.Inorder\n 5.Sum of elements\n 6.Exit");
         printf("\n Enter a option: ");
         scanf("%d",&a);
         switch(a){
@@ -160,6 +168,9 @@ int main(){
                 Inorder(root);
                 break;
             case 5:
+                printf("\n Sum of all elements is: %d",Sum_all_elements(root));
+                break;
+            case 6:
                 exit(0);
                 break;
             default:

@@ -27,6 +27,15 @@ void printLL(){
     }
     printf("NULL");
 }
+int length(){
+    int count=0;
+    struct node *temp=head;
+    while(temp!=NULL){
+        count++;
+        temp=temp->next;
+    }
+    return count;
+}
 int main(){
     int m,x;
     printf("\n Enter the number of nodes of the linked list: ");
@@ -37,5 +46,6 @@ int main(){
         createnode(x);
     }
     printLL();
+    printf("\n The size of the linked-list is:%d",length());
     return 0;
 }

@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<limits.h>
 typedef struct node{
     struct node *left;
     struct node *right;
@@ -148,11 +149,21 @@ int height(Tree *root){
     Delete_Queue(&q);
     return level;
 }
+int IsBST_inorder(struct node *root,int *prev){
+    if(!root)
+        return 1;
+    if(!IsBST_inorder(root->left,prev))
+        return 0;
+    if(*prev > root->data)
+        return 0;
+    *prev=root->data;
+    return IsBST_inorder(root->right,prev);
+}
 Tree *root=NULL;
 int main(){
-    int a,b;
+    int a,b,prev;
     while(1){
-        printf("\n 1.Insert\n 2.Display(Level order)\n 3.Find Height\n 5.Exit");
+        printf("\n 1.Insert\n 2.Display(Level order)\n 3.Find Height\n 4.IsBST\n 5.Exit");
         printf("\n Enter a option: ");
         scanf("%d",&a);
         switch(a){
@@ -166,6 +177,13 @@ int main(){
                 break;
             case 3:
                 printf("\n The height is : %d",height(root));
+                break;
+            case 4:
+                prev=INT_MIN;
+                if(IsBST_inorder(root,&prev))
+                    printf("\n The tree is a BST");
+                else
+                    printf("\n The tree is not a BST");
                 break;
             case 5:
                 exit(0);

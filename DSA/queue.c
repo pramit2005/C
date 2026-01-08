@@ -1,53 +1,71 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<limits.h>
 #define N 15
 int f=-1,r=-1;
-int a[N];
-void enqueue(){
-    int n;
-    if(r==N-1)
-    printf("\n The queue is full");
-
+int queue[N];
+void enqueue(int n){
+   if(r>N-1)
+    printf("\n Queue is full");
     else{
-        printf("\n Enter the number: ");
-        scanf("%d",&n);
-        if(f==-1 && r==-1)
-        f=r=0;
-        else
-        r++;
-        a[r]=n;
+        if(f==-1)
+            f=0;
+        queue[++r]=n;
     }
 }
-void dequeue(){
-    if(f==-1 || f>r)
-    printf("\n The queue is empty");
+int dequeue(){
+    int n;
+    if(f==-1)
+        return INT_MIN;
     else{
-        printf("\n The element is: %d",a[f++]);
+        n=queue[f++];
         if(f>r)
         f=r=-1;
-
+        return n;
     }
 }
+int peek(){
+    int n;
+    if(f==-1)
+        return INT_MIN;
+    else
+        return queue[f];
+}
+void Empty_queue(){
+    if(f==-1)
+        return;
+    while(f!=-1)
+        dequeue();
+}
+int IsEmpty(){
+    return f==-1;
+}
 void print_queue(){
-    if(f==-1 || f>r)
-    printf("\n The queue is empty");
+    if(f==-1)
+    printf("\n The Queue is empty");
     else{
         for(int i=f;i<=r;i++)
-        printf(" %d ",a[i]);
+        printf(" %d ",queue[i]);
     }
 }
 int main(){
-    int a;
+    int a,m;
     while(1){
-    printf("\n 1.Enqueue \n 2. Dequeue \n 3.Print \n 4.Exit");
+    printf("\n 1.Enqueue\n 2.Dequeue\n 3.Print\n 4.Exit");
     printf("\n Enter a option: ");
     scanf("%d",&a);
         switch(a){
             case 1:
-            enqueue();
+            printf("\n Enter the data: ");
+            scanf("%d",&m);
+            enqueue(m);
             break;
             case 2:
-            dequeue();
+            m=dequeue();
+            if(m==INT_MIN)
+                printf("\n Queue is empty");
+            else
+                printf("\n The element is: %d",m);
             break;
             case 3:
             print_queue();

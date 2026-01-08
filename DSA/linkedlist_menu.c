@@ -52,7 +52,7 @@ void insert_end(int n){
     temp=temp->next;
     temp->next=newnode;
 }
-void insert_position(int x,int n){
+void insert_after_data(int x,int n){
     struct node*temp=head;
     struct node*newnode=(struct node*)malloc(sizeof(struct node));
     newnode->data=n;
@@ -122,7 +122,33 @@ void reverse(struct node* curr) {
     curr->next->next = curr;
     curr->next = NULL; 
 }
-
+void insert_any_position(int h,int pos)
+{
+    //pos is the position where I want to add
+    int count=1;
+    struct node *newnode=(struct node*)malloc(sizeof(struct node));
+    struct node *temp=head;
+    newnode->data=h;
+    if(head==NULL)
+    {
+        head=newnode;
+        newnode->next=NULL;
+    }
+    else{
+        if(pos==1){
+            newnode->next=head;
+            head=newnode;
+            return;
+        }
+        while(count<pos-1 && temp->next!=NULL)
+        {
+            count++;
+            temp=temp->next;
+        }
+        newnode->next=temp->next;
+        temp->next=newnode;
+    }
+}
 int main(){
     int m,x,a,y;
     printf("\n Enter the number of nodes of the linked list: ");
@@ -134,48 +160,48 @@ int main(){
     }
     while(1){
         int k=0;
-    printf("\n 1.Insert at the begining\n 2.Insert at the position\n 3.Insert at the end\n 4.Print the Linked List\n 5.Delete at the begining\n 6.Delete at the position\n 7.Delete at the end\n 8.Reverse\n 9.Exit");
-    printf("\n Enter a option:  ");
-    scanf("%d",&a);
-    switch(a){
-        case 1:
-        printf("\n Enter the data of the node: ");
-        scanf("%d",&k);
-        insert_begining(k);
-        break;
-        case 2:
-        printf("\n Enter the data of the node after which you want to add: ");
-        scanf("%d",&y);
-        printf("\n Enter the data of the node: ");
-        scanf("%d",&k);
-        insert_position(y,k);
-        break;
-        case 3:
-         printf("\n Enter the data of the node: ");
-        scanf("%d",&k);
-        insert_end(k);
-        break;
-        case 4:
-        printLL();
-        break;
-         case 5:
-        delete_begining();
-        break;
-        case 6:
-        delete_position();
-        break;
-        case 7:
-        delete_end();
-        break;
-        case 8:
-        reverse(head);
-        break;
-        case 9:
-        exit(0);
-        default:
-        printf("Invalid input");
-        break;
-    }
+        printf("\n 1.Insert at the begining\n 2.Insert at the position\n 3.Insert at the end\n 4.Print the Linked List\n 5.Delete at the begining\n 6.Delete at the position\n 7.Delete at the end\n 8.Reverse\n 9.Exit");
+        printf("\n Enter a option:  ");
+        scanf("%d",&a);
+        switch(a){
+            case 1:
+                printf("\n Enter the data of the node: ");
+                scanf("%d",&k);
+                insert_begining(k);
+                break;
+            case 2:
+                printf("\n Enter the position of the node to add: ");
+                scanf("%d",&y);
+                printf("\n Enter the data of the node: ");
+                scanf("%d",&k);
+                insert_any_position(k,y);
+                break;
+            case 3:
+                printf("\n Enter the data of the node: ");
+                scanf("%d",&k);
+                insert_end(k);
+                break;
+            case 4:
+                printLL();
+                break;
+            case 5:
+                delete_begining();
+                break;
+            case 6:
+                delete_position();
+                break;
+            case 7:
+                delete_end();
+                break;
+            case 8:
+                reverse(head);
+                break;
+            case 9:
+                exit(0);
+            default:
+                printf("Invalid input");
+                break;
+        }
     }
     return 0;
 }

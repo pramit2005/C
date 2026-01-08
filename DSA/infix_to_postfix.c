@@ -65,7 +65,7 @@ int main(){
     char p;
     printf("\n Enter the infix equation: ");
     fgets(stack,max-1,stdin);
-    stack[strcspn(stack, "\n")] = '\0';
+    stack[strcspn(stack, "\n")] = '\0'; 
     while(stack[i]!='\0'){
         char ch=stack[i];
         if(isOperand(ch)){

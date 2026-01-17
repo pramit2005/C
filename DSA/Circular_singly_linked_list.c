@@ -19,6 +19,10 @@ void createnode(int n){
    }
 }
 void printLL(){
+    if(tail==NULL){
+        printf("\n Nothing to delete");
+        return;
+    }
     struct node* temp=tail->next;
    do {
     printf("->%d-",temp->data);

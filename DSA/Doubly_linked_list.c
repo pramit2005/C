@@ -21,18 +21,14 @@ void createnode(int n){
 }
 
 void printLL(){
-    struct node* temp=head;
-    struct node *temp2=tail;
-    printf("NULL->");
-    while(temp){
-    printf("%d->",temp->data);
-    temp=temp->next;
+    struct node *temp=head;
+    if(head==NULL){
+        printf("\n Nothing to delete");
+        return;
     }
-    printf("NULL\n");
-     printf("NULL->");
-    while(temp2){
-    printf("%d->",temp2->data);
-    temp2=temp2->prev;
+    while(temp){
+        printf("%d->",temp->data);
+        temp=temp->next;
     }
     printf("NULL\n");
 }
@@ -68,69 +64,126 @@ void insert_end(int n){
    tail=newnode;
     }
 }
-void insert_position(int x,int n){
-    struct node*temp=head;
+void insert_any_position(int h, int pos)
+{
+    int count=1; //count should have started from 1
     struct node*newnode=(struct node*)malloc(sizeof(struct node));
-    newnode->data=n;
-    if(head==NULL){
-    printf("INVALID OPTION");
+    struct node*temp=head;
+    newnode->data=h;
+    if(head==NULL)
+    {
+        newnode->next=newnode->prev=NULL;
+        head=tail=newnode;
+    }
+    else
+    {
+        if(pos==1) //This should have been pos==1
+        {
+            newnode->next=head;
+            head->prev=newnode;
+            newnode->prev=NULL;
+            head=newnode;
+        }
+        else
+        {
+            while(count<(pos-1) && temp->next!=NULL)
+            {
+                temp=temp->next;
+                count++;
+            }
+            newnode->next=temp->next;
+            newnode->prev=temp;
+            if(temp->next!=NULL) //This should have been temp->next!=NULL 
+                temp->next->prev=newnode;
+            temp->next=newnode;
+            if(temp==tail)
+                tail==newnode;
+        }
+    }
+}
+void deletion_at_beg()
+{
+    struct node *temp;
+    if(head==NULL)
+    {
+        printf("no node found");
+    }
+    else if(head->next==NULL) //This should have been head->next==NULL
+    {
+        temp=head;
+        head=tail=NULL;
+        free(temp);
+    }
+    else
+    {
+        temp=head;
+        head=head->next;
+        head->prev=NULL;
+        temp->next=NULL;
+        free(temp);
+    }
+}
+void deletion_at_end()
+{
+    struct node *temp;
+    if(head==NULL)
+    {
+        printf("no node found");
+    }
+    else if(head->next==NULL) //This should have been head->next!=NULL
+    {
+        temp=head;
+        head=tail=NULL;
+        free(temp);
+    }
+    else
+    {
+        temp=tail;
+        tail=tail->prev;
+        tail->next=NULL;
+        temp->prev=NULL;
+        free(temp);
+    }
+}
+void deletion_at_any_pos(int pos)
+{
+   struct node*temp=head;//temp was never initialized
+   int count=1;//Count should have been started from 1
+    if(head==NULL)
+    {
+        printf("no node found");
+    }
+    else if(head->next==NULL)
+    {
+        temp=head;
+        head=tail=NULL;
+        free(temp);
     }
     else 
     {
-    while(temp->data!=x)
-    temp=temp->next;
-    newnode->next=temp->next;
-    newnode->prev=temp;
-    temp->next->prev=newnode;
-    temp->next=newnode;   
-    }
-    }
-void delete_begining(){
-    struct node*temp=head;
-    if(head==NULL)
-        printf("\n Nothing to delete");
-    else {
-        head=head->next;
-        head->prev=NULL;
-        free(temp);
-    }
-}
-void delete_end(){
-    struct node*temp=tail;
-    if(head==NULL)
-        printf("\n Nothing to delete");
-    else if(head->next==NULL){
-        head=NULL;
-        tail=NULL;
-        free(temp);
-    }
-    else{
-       tail=tail->prev;
-       tail->next=NULL;
-       temp->prev=NULL;
-       free(temp);
-    }
-}
-void delete_position(){
-    struct node*temp=head;
-    int x;
-    if(head==NULL)
-    printf("\n Nothing to delete");
-    else if(head->next==NULL){
-    head=NULL;
-    tail=NULL;
-    free(temp);
-    }
-    else{
-        printf("\n Enter the data of the node you want to delete: ");
-        scanf("%d",&x);
-        while(temp->data!=x)
-        temp=temp->next;
-        temp->prev->next=temp->next;
-        temp->next->prev=temp->prev;
-        temp->next=NULL;
-        temp->prev=NULL;
-        free(temp);
+        if(pos==1) //It should have been pos==1 
+        {
+            deletion_at_beg();
+            return;
+        }   //We should check pos==1 before traversing,if it is true then there is no need to traverse & therefore no need to check temp==head
+        while(count<pos && temp->next!=NULL)
+        {
+            temp=temp->next;
+            count++;
+        }
+        if(temp==tail)//So,I changed 'else if' to 'if'
+        {
+           deletion_at_end();
+           return; 
+        }
+        else
+        {
+            temp->prev->next=temp->next;
+            temp->next->prev=temp->prev;
+            temp->next=NULL;
+            temp->prev=NULL;
+            free(temp);
+        }
     }
 }
 void reverse(struct node* curr) {
@@ -166,11 +219,11 @@ int main(){
         insert_begining(k);
         break;
         case 2:
-        printf("\n Enter the data of the node after which you want to add: ");
+        printf("\n Enter the position of the node to add: ");
         scanf("%d",&y);
         printf("\n Enter the data of the node: ");
         scanf("%d",&k);
-        insert_position(y,k);
+        insert_any_position(k,y);
         break;
         case 3:
          printf("\n Enter the data of the node: ");
@@ -181,13 +234,15 @@ int main(){
         printLL();
         break;
          case 5:
-        delete_begining();
+        deletion_at_beg();
         break;
         case 6:
-        delete_position();
+        printf("\n Enter the position of the node to delete: ");
+        scanf("%d",&y);
+        deletion_at_any_pos(y);
         break;
         case 7:
-        delete_end();
+        deletion_at_end();
         break;
         case 8:
         reverse(head);

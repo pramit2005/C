@@ -55,23 +55,36 @@ void insert_end(int n){
     tail=newnode;
     }
 }
-void insert_position(int x,int n){
-    struct node*temp=tail->next;
-    struct node*newnode=(struct node*)malloc(sizeof(struct node));
-    newnode->data=n;
-    if(tail==NULL){
-    printf("INVALID OPTION");
-    }
-    else 
+void insert_at_pos(int h,int pos)
+{   int count=1;
+    if(tail==NULL)
     {
-        while(temp->data!=x)
-        temp=temp->next;
+        insert_begining(h);
+        return;
+    }
+    else
+    {
+        if(pos==1)
+        {
+            insert_begining(h);
+            return;
+        }
+        struct node*newnode=(struct node*)malloc(sizeof(struct node));
+        newnode->data=h;
+        struct node*temp=tail->next;
+        while(count<pos-1 && temp->next!=tail->next)
+        {
+            count++;
+            temp=temp->next;
+        }
         newnode->next=temp->next;
-        if(tail->next==tail)
-            tail=newnode;
         temp->next=newnode;
+        if(temp==tail)
+        {
+            tail=newnode;
+        }
     }
-    }
+}
 void delete_begining(){
     struct node*temp=tail->next;
     if(tail==NULL)
@@ -104,32 +117,38 @@ void delete_end(){
         free(temp2);
     }
 }
-void delete_position(){
-    struct node*temp=tail->next;
-    int x;
-     if(tail==NULL)
-        printf("\n Nothing to delete");
-    else if(tail->next==tail){
-        tail=NULL;
-        free(temp);
+void Deletion_at_pos(int pos)
+{
+    struct node*temp,*temp2;
+    int count=1;
+    if(tail==NULL)
+    {
+        printf("\n No node to delete");
     }
-    else{
-        printf("\n Enter the data of the node you want to delete: ");
-        scanf("%d",&x);
-        while(temp->next->data!=x)
-        temp=temp->next;
-        struct node*temp2=temp->next;
-        if(temp2 == tail) {  
-        temp->next = tail->next; 
-        tail = temp;            
-        } 
-        else {
-        temp->next = temp2->next;
+    else
+    {
+        if(pos==1)
+        {
+           delete_begining();
+           return; 
         }
-    temp2->next = NULL;
-    free(temp2);
-    }
-    }
+        else
+        {
+            temp=tail->next;
+            while(count<pos-1 && temp->next!=tail)
+            {
+                temp=temp->next;
+                count++;
+            }
+            temp2=temp->next;
+            temp->next=temp2->next;
+            temp2->next=NULL;
+                if(temp2==tail)
+                    tail=temp;
+            free(temp2);
+        }
+}
+}
 void reverse(struct node* curr) {
     if (curr == NULL)
         return;
@@ -191,11 +210,11 @@ int main(){
         insert_begining(k);
         break;
         case 2:
-        printf("\n Enter the data of the node after which you want to add: ");
+        printf("\n Enter the position of the node to add: ");
         scanf("%d",&y);
         printf("\n Enter the data of the node: ");
         scanf("%d",&k);
-        insert_position(y,k);
+        insert_at_pos(k,y);
         break;
         case 3:
          printf("\n Enter the data of the node: ");
@@ -209,7 +228,9 @@ int main(){
         delete_begining();
         break;
         case 6:
-        delete_position();
+        printf("\n Enter the position of the node to delete: ");
+        scanf("%d",&y);
+        Deletion_at_pos(y);
         break;
         case 7:
         delete_end();

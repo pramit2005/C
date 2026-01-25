@@ -4,7 +4,7 @@
 int top=-1;
 int stack[max];
 void push(int x){
-    if(top==max){
+    if(top==max-1){
         printf("\n Stack overflow");
         return;
     }

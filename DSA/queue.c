@@ -5,8 +5,8 @@
 int f=-1,r=-1;
 int queue[N];
 void enqueue(int n){
-   if(r>N-1)
-    printf("\n Queue is full");
+    if(r>N-1)
+        printf("\n Queue is full");
     else{
         if(f==-1)
             f=0;

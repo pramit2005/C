@@ -1,139 +1,151 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<limits.h>
 #define MAX 100
 typedef struct heap{
     int *array;
-    int count;      //Number of elements in the heap
-    int capacity;   //Size of the heap
+    int count;
+    int capacity;
 }Heap;
-Heap* CreateHeap(int capacity){
+Heap* CreateHeap(int size){
     Heap *h=(Heap*)malloc(sizeof(Heap));
-    if(h==NULL){
-        printf("Memory allocation failed");
-        return NULL;
-    }
-    h->capacity=capacity;
-    h->count=0;
-    h->array=(int*)malloc(sizeof(int)*capacity);
-    if(h->array==NULL){
+    if(!h){
         printf("\n Memory allocation failed");
         return NULL;
     }
+    h->array=(int*)malloc(sizeof(int)*size);
+    if(!h->array){
+        printf("\n Memory allocation failed");
+        return NULL;
+    }
+    h->count=0;
+    h->capacity=size;
     return h;
 }
 int parent(Heap *h,int i){
-    if(i<=0 || i>=h->count)
-        return -1;
+    if(i<=0 || i>(h->count))
+        return INT_MIN;
     return (i-1)/2;
 }
 int LeftChild(Heap *h,int i){
     int left=2*i+1;
     if(left>=h->count)
-        return -1;
+        return INT_MIN;
     return left;
 }
 int RightChild(Heap *h,int i){
     int right=2*i+2;
     if(right>=h->count)
-        return -1;
+        return INT_MIN;
     return right;
 }
-int GetMaximum(Heap *h){    //This code is done considering this as Max Heap
-    if(h==NULL || h->count==0)
-        return -1;
+int Getminimum(Heap *h){
+    if(h==NULL || h->count==0){
+        return INT_MIN;
+    }
     return h->array[0];
 }
-void PercolateDown(Heap *h,int i){  //'i' is index where heap property is violated at first
-    int l,r,max,temp;
+int FindMaxInMinHeap(Heap *h){
+    int max=INT_MIN;
+    if(h==NULL || h->count==0)
+        return INT_MIN;
+    for(int i=(h->count+1)/2;i<h->count;i++){
+        if(max<h->array[i])
+            max=h->array[i];
+    }
+    return max;
+}
+void PercolateDown(Heap *h,int i){
+    int l,r,temp,min;
     l=LeftChild(h,i);
     r=RightChild(h,i);
-    if(l!=-1 && h->array[l]>h->array[i])
-        max=l;
+    if(l!=INT_MIN && h->array[l]<h->array[i])
+        min=l;
     else
-        max=i;
-    if(r!=-1 && h->array[r]>h->array[max])
-        max=r;
-    if(max!=i){
-        //swap h->array[i] & h->array[max]
+        min=i;
+    if(r!=INT_MIN && h->array[r]<h->array[min])
+        min=r;
+    if(min!=i){
+        //swapping h->array[i] & h->array[min]
         temp=h->array[i];
-        h->array[i]=h->array[max];
-        h->array[max]=temp;
-        PercolateDown(h,max);
+        h->array[i]=h->array[min];
+        h->array[min]=temp;
+        PercolateDown(h,min);
     }
 }
-int DeleteMax(Heap *h){
-    int data;
-    if(h->count==0)
-        return -1;
-    data=h->array[0];
-    h->array[0]=h->array[h->count-1];   //Putting the rightmost(last) element in root
+int DeleteMin(Heap *h){
+    if(h==NULL || h->count==0)
+        return INT_MIN;
+    int data=h->array[0];
+    h->array[0]=h->array[h->count-1];
     h->count--;
     PercolateDown(h,0);
     return data;
 }
 void ResizeHeap(Heap *h){
-    int *array_old=h->array;
+    int *old_array=h->array;
     h->array=(int*)malloc(sizeof(int)*(h->capacity)*2);
-    if(h->array==NULL){
+    if(!h->array){
         printf("\n Memory allocation failed");
-        h->array=array_old;
+        h->array=old_array;
         return;
     }
-    for(int i=0;i<h->capacity;i++)
-        h->array[i]=array_old[i];
     h->capacity*=2;
-    free(array_old);
+    for(int i=0;i<h->count;i++)
+        h->array[i]=old_array[i];
+    free(old_array);
 }
-void Insert(Heap *h,int data){   //Inserting at the last(rightmost) element,then using Percolate Up
-    int i;
+void Insert(Heap *h,int data){
+    if(!h){
+        printf("\n Heap does not exists");
+        return;
+    }
     if(h->count==h->capacity)
         ResizeHeap(h);
-    h->count++;                 //Increasing the heapsize to insert at last position
-    i=h->count-1;
-    while(i>0 && data>h->array[(i-1)/2]){ //checking the parent nodes
+    h->count++;
+    int i=h->count-1;
+    while(i>0 && data<h->array[(i-1)/2]){
         h->array[i]=h->array[(i-1)/2];
         i=(i-1)/2;
     }
-    h->array[i]=data; 
-}
-Heap* DestroyHeap(Heap *h){
-    if(h==NULL)
-        return NULL;
-    free(h->array);
-    free(h);
-    h=NULL;
-    return h;
+    h->array[i]=data;
 }
 void BuildHeap(Heap *h,int a[],int n){
-    if(h==NULL)
+    if(!h)
         return;
     while(n>h->capacity)
         ResizeHeap(h);
-
-    for(int i=0;i<n;i++)
+    for(int i=0;i<n;i++){
         h->array[i]=a[i];
+    }
     h->count=n;
-    for(int j=(n-1)/2;j>=0;j--) //Finding the last parent node
+    for(int j=(n-1)/2;j>=0;j--)
         PercolateDown(h,j);
 }
+Heap* DestroyHeap(Heap *h){
+    if(!h)
+        return NULL;
+    free(h->array);
+    free(h);
+    return NULL;
+}
 void HeapSort(int a[],int n){
-    int old_size,i,temp;
+    int temp;
     Heap *h=CreateHeap(n);
     BuildHeap(h,a,n);
-    old_size=h->count;
-    for(i=n-1;i>0;i--){
+    for(int i=0;i<n;i++){
         temp=h->array[0];
         h->array[0]=h->array[h->count-1];
         h->array[h->count-1]=temp;
         h->count--;
         PercolateDown(h,0);
     }
-    h->count=old_size;
-    for(int j=0;j<n;j++)
-        a[j]=h->array[j];    
+    for(int i=0;i<n;i++)
+        a[i]=h->array[i];
+    h=DestroyHeap(h);
 }
 void Display_Heap(Heap *h){
-    if(h==NULL || h->count==0){
+    if(!h || !h->count){
         printf("\n Nothing to display");
         return;
     }
@@ -144,7 +156,7 @@ int main(){
     int x,n,a[MAX];
     Heap *h=NULL;
     while(1){
-        printf("\n 1.BuildHeap\n 2.Insert\n 3.Delete Max\n 4.Getting Max\n 5.Destroy Heap\n 6.Display Heap\n 7.Heap Sort\n 8.Exit");
+        printf("\n 1.BuildHeap\n 2.Insert\n 3.Delete Min\n 4.Getting Min\n 5.Getting Max\n 6.Destroy Heap\n 7.Display Heap\n 8.Heap Sort\n 9.Exit");
         printf("\nEnter the option: ");
         scanf("%d",&x);
         switch(x){
@@ -169,22 +181,33 @@ int main(){
                 Insert(h,n);
                 break;
             case 3:
-                x=DeleteMax(h);
-                if(x==-1)
+                x=DeleteMin(h);
+                if(x==INT_MIN)
                     printf("\n Nothing to delete");
                 else
-                printf("\n Max deleting element is:%d",x);
+                printf("\n Min deleting element is:%d",x);
                 break;
             case 4:
-                printf("\n The max element is:%d",GetMaximum(h));
+                x=Getminimum(h);
+                if(x==INT_MIN)
+                    printf("\n Nothing to display");
+                else
+                printf("\n The min element is:%d",x);
                 break;
             case 5:
-                h=DestroyHeap(h);
+                x=FindMaxInMinHeap(h);
+                if(x==INT_MIN)
+                    printf("\n Nothing to display");
+                else
+                printf("\n The max element is:%d",x);
                 break;
             case 6:
-                Display_Heap(h);
+                h=DestroyHeap(h);
                 break;
             case 7:
+                Display_Heap(h);
+                break;
+            case 8:
                 printf("\n Enter the number of elements: ");
                 scanf("%d",&n);
                 printf("\n Enter the elements: ");
@@ -195,7 +218,7 @@ int main(){
                 for(int i=0;i<n;i++)
                     printf(" %d ",a[i]);
                 break;
-            case 8:
+            case 9:
                 exit(0);
                 break;
             default:

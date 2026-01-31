@@ -6,7 +6,7 @@ struct node{
     char data;
     struct node *next;
 };
-char stack[max],output[max];
+char input[max],output[max];
 int ind=0;
 struct node *top=NULL;
 int precedence(char a){
@@ -62,15 +62,17 @@ int isEmpty(){
 }
 int main(){
     int i=0;
-    char p;
     printf("\n Enter the infix equation: ");
-    fgets(stack,max-1,stdin);
-    stack[strcspn(stack, "\n")] = '\0'; 
-    while(stack[i]!='\0'){
-        char ch=stack[i];
+    fgets(input,max-1,stdin);
+    input[strcspn(input, "\n")] = '\0'; 
+    while(input[i]!='\0'){
+        char ch=input[i];
         if(isOperand(ch)){
             output[ind]=ch;
             ind++;   
+        }
+        else if(ch=='('){
+            push(ch);
         }
         else if(ch==')'){
             while('('!=peek() && !isEmpty()){
@@ -79,12 +81,9 @@ int main(){
             }
             pop();
         }
-        else if(ch=='('){
-            push(ch);
-        }
         else{
             if(ch=='^'){
-                while(!isEmpty() && precedence(peek())>precedence(ch) && peek()=='(')
+                while(!isEmpty() &&  peek()!='(' && precedence(peek())>precedence(ch))
                 output[ind++]=pop();
             }
            else {
@@ -101,6 +100,6 @@ int main(){
          ind++;
     }
     output[ind]='\0';
-    printf("\n The output expression is: %s",output);
+    printf("\n The postfix expression is: %s",output);
     return 0;
 }

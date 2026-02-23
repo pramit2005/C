@@ -92,23 +92,28 @@ void delete_end(){
         temp->next=NULL;
     }
 }
-void delete_position(){
-    struct node*temp=head;
-    int x;
-     if(head==NULL)
+void delete_position(int pos){
+    if(head==NULL){
         printf("\n Nothing to delete");
-    else if(head->next==NULL){
-        head=NULL;
-        free(temp);
     }
     else{
-        printf("\n Enter the data of the node you want to delete: ");
-        scanf("%d",&x);
-        while(temp->next->data!=x)
-        temp=temp->next;
-        struct node*temp2=temp->next;
-        temp->next=temp->next->next;
-        free(temp2);
+        struct node *temp=head;
+        if(pos==1){
+            head=head->next;
+            temp->next=NULL;
+            free(temp);
+        }
+        else{
+            int count=1;
+            while(count<pos-1 && temp->next){
+                count++;
+                temp=temp->next;
+            }
+            struct node *temp2=temp->next;
+            temp->next=temp->next->next;
+            temp2->next=NULL;
+            free(temp2);
+        }
     }
 }
 void reverse(struct node* curr) {
@@ -121,6 +126,22 @@ void reverse(struct node* curr) {
     reverse(curr->next);
     curr->next->next = curr;
     curr->next = NULL; 
+}
+void Reverse_Iterative(){
+    struct node *prev=NULL;
+    struct node *curr=head,*Next;
+    if(curr==NULL || curr->next==NULL){
+        return;
+    }
+    else{
+        while(curr!=NULL){
+        Next=curr->next;
+        curr->next=prev;
+        prev=curr;
+        curr=Next;
+        }
+        head=prev;
+    }
 }
 void insert_any_position(int h,int pos)
 {
@@ -149,6 +170,31 @@ void insert_any_position(int h,int pos)
         temp->next=newnode;
     }
 }
+void Insertion_Sort_LL(){
+    struct node *sorted=NULL;
+    struct node *curr=head,*Next;
+    if(!head || !head->next)
+        return;
+    else{
+        while(curr){
+            Next=curr->next;
+            if(sorted==NULL || sorted->data > curr->data){
+                curr->next=sorted;
+                sorted=curr;
+            }
+            else{
+                struct node *temp=sorted;
+                while(temp->next->data <= curr->data){
+                    temp=temp->next;
+                }
+                curr->next=temp->next;
+                temp->next=curr->next;
+            }
+            curr=Next;
+        }
+        head=sorted;
+    }
+}
 int main(){
     int m,x,a,y;
     printf("\n Enter the number of nodes of the linked list: ");
@@ -160,7 +206,7 @@ int main(){
     }
     while(1){
         int k=0;
-        printf("\n 1.Insert at the begining\n 2.Insert at the position\n 3.Insert at the end\n 4.Print the Linked List\n 5.Delete at the begining\n 6.Delete at the position\n 7.Delete at the end\n 8.Reverse\n 9.Exit");
+        printf("\n 1.Insert at the begining\n 2.Insert at the position\n 3.Insert at the end\n 4.Print the Linked List\n 5.Delete at the begining\n 6.Delete at the position\n 7.Delete at the end\n 8.Reverse\n 9.Sort\n 10.Exit");
         printf("\n Enter a option:  ");
         scanf("%d",&a);
         switch(a){
@@ -188,15 +234,20 @@ int main(){
                 delete_begining();
                 break;
             case 6:
-                delete_position();
+                printf("\n Enter the position of the node to delete: ");
+                scanf("%d",&k);
+                delete_position(k);
                 break;
             case 7:
                 delete_end();
                 break;
             case 8:
-                reverse(head);
+                Reverse_Iterative();
                 break;
             case 9:
+                Insertion_Sort_LL();
+                break;
+            case 10:
                 exit(0);
             default:
                 printf("Invalid input");

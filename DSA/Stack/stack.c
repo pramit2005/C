@@ -38,10 +38,28 @@ void display(){
             printf(" %d ",stack[i]);
     }
 }
+void search(int x){
+    if(top==-1){
+        printf("\n The stack is empty");
+    }
+    else{
+        int pos=-1;
+        for(int i=0;i<=top;i++){
+            if(stack[i]==x){
+                pos=i+1;
+                break;
+            }
+        }
+        if(pos==-1)
+            printf("\n Element not found");
+        else
+            printf("\n ELement found at position %d",pos);
+    }
+}
 int main(){
     int op,a;
     while(1){
-        printf("\n 1.Push\n 2.Pop\n 3.Display\n 4.Peek\n 5.Exit");
+        printf("\n 1.Push\n 2.Pop\n 3.Display\n 4.Peek\n 5.Search\n 6.Exit");
         printf("\n Enter a option: ");
         scanf("%d",&op);
         switch(op){
@@ -60,6 +78,11 @@ int main(){
             peek();
             break;
             case 5:
+            printf("\n Enter a number to search: ");
+            scanf("%d",&a);
+            search(a);
+            break;
+            case 6:
             exit(0);
             break;
             default:

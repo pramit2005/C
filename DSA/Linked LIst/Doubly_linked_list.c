@@ -197,7 +197,6 @@ void reverse(struct node* curr) {
     curr->next->next = curr;
     curr->next = NULL; 
 }
-
 int main(){
     int m,x,a,y;
     printf("\n Enter the number of nodes of the linked list: ");

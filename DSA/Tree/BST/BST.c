@@ -8,7 +8,7 @@ struct node{
 struct node* Insert(struct node *root,int x){
     if(root==NULL){
         root=(struct node*)malloc(sizeof(struct node));
-        if(root==NULL){
+        if(root==NULL){                 //malloc NULL return case
             printf("\n Memory error");
             return NULL; 
         }

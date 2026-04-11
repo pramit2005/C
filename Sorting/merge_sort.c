@@ -30,12 +30,12 @@ void merge_sort(int a[],int left,int right) {
         merge(a,left,mid,right);
     }
 }
-   void printarr(int a[],int size) {
+void printarr(int a[],int size) {
        for (int i=0;i< size ;i++) {
            printf("%d ",a[i]);
        }
     printf("\n");
-   }
+}
 int main(){
     int arr[MAX],n;
     printf("Enter the size of the array: ");

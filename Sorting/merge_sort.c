@@ -50,4 +50,3 @@ int main(){
     printarr(arr,n);
     return 0;
 }
-

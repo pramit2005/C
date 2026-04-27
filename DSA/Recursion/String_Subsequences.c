@@ -12,7 +12,7 @@ void String_Subsequences(char *str,int index,char *curr,int curr_index){
 }
 int main(){
     char s[max],current[max];
-    printf("\n Enter the string to find subswquneces: ");
+    printf("\n Enter the string to find subsequences: ");
     scanf("%[^\n]",&s);
     String_Subsequences(s,0,current,0);
     return 0;
